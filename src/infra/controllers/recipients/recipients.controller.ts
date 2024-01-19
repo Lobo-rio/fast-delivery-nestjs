@@ -22,6 +22,7 @@ import { CreateRecipientsService } from '../../../domain/application/recipients/
 import { UpdateRecipientsService } from '../../../domain/application/recipients/update-recipients.service';
 import { DeleteRecipientsService } from '../../../domain/application/recipients/delete-recipients.service';
 import { FindManyRecipientsService } from '../../../domain/application/recipients/findmany-recipients.service';
+import { FindByIdRecipientsService } from '../../../domain/application/recipients/findbyid-recipients.service';
 
 import { CreateRecipientDto } from '../../../helpers/dtos/recipients/create-recipient.dto';
 import { UpdateRecipientDto } from '../../../helpers/dtos/recipients/update-recipient.dto';
@@ -34,6 +35,7 @@ export class RecipientsController {
     private readonly updateRecipientsService: UpdateRecipientsService,
     private readonly deleteRecipientsService: DeleteRecipientsService,
     private readonly findManyRecipientsService: FindManyRecipientsService,
+    private readonly findByIdRecipientsService: FindByIdRecipientsService,
   ) {}
 
   @Get()
@@ -46,6 +48,28 @@ export class RecipientsController {
   })
   async findMany() {
     return await this.findManyRecipientsService.execute();
+  }
+
+  @Get(':id')
+  @ApiOperation({ summary: 'List a single recipient' })
+  @ApiResponse({
+    status: 200,
+    description: 'Returned single recipient successfully',
+    type: IndexTodoSwagger,
+    isArray: false,
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Invalid parameters',
+    type: BadRequestSwagger,
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Recipient not found',
+    type: NotFoundSwagger,
+  })
+  async findById(@Param('id', new ParseUUIDPipe()) id: string) {
+    return await this.findByIdRecipientsService.execute(id);
   }
 
   @Post()

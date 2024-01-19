@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { CreateRecipientsService } from '../../../domain/application/recipients/create-recipients.service';
 import { UpdateRecipientsService } from '../../../domain/application/recipients/update-recipients.service';
 import { DeleteRecipientsService } from '../../../domain/application/recipients/delete-recipients.service';
+import { FindByIdRecipientsService } from '../../../domain/application/recipients/findbyid-recipients.service';
 
 import { RecipientsController } from '../../../infra/controllers/recipients/recipients.controller';
 import { Recipient } from '../../../infra/entities/recipients/recipient.entity';
@@ -17,6 +18,7 @@ import { FindManyRecipientsService } from '../../../domain/application/recipient
     UpdateRecipientsService,
     DeleteRecipientsService,
     FindManyRecipientsService,
+    FindByIdRecipientsService,
     {
       provide: 'RecipientsInterfaceRepository',
       useClass: RecipientRepository,
@@ -28,6 +30,7 @@ import { FindManyRecipientsService } from '../../../domain/application/recipient
     UpdateRecipientsService,
     DeleteRecipientsService,
     FindManyRecipientsService,
+    FindByIdRecipientsService,
   ],
 })
 export class RecipientsModule {}
