@@ -4,6 +4,7 @@ import { Recipient } from '../../../../infra/entities/recipients/recipient.entit
 
 export interface RecipientsInterfaceRepository {
   findById(id: string): Promise<Recipient>;
+  findMany(): Promise<Recipient[]>;
   create(data: CreateRecipientDto): Promise<Recipient>;
   update(id: string, data: UpdateRecipientDto): Promise<Recipient>;
   softDelete(id: string): Promise<void>;

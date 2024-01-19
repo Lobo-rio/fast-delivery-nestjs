@@ -8,6 +8,7 @@ import { DeleteRecipientsService } from '../../../domain/application/recipients/
 import { RecipientsController } from '../../../infra/controllers/recipients/recipients.controller';
 import { Recipient } from '../../../infra/entities/recipients/recipient.entity';
 import { RecipientRepository } from '../../../infra/repositoreis/recipients/recipients.repository';
+import { FindManyRecipientsService } from '../../../domain/application/recipients/findmany-recipients.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Recipient])],
@@ -15,6 +16,7 @@ import { RecipientRepository } from '../../../infra/repositoreis/recipients/reci
     CreateRecipientsService,
     UpdateRecipientsService,
     DeleteRecipientsService,
+    FindManyRecipientsService,
     {
       provide: 'RecipientsInterfaceRepository',
       useClass: RecipientRepository,
@@ -25,6 +27,7 @@ import { RecipientRepository } from '../../../infra/repositoreis/recipients/reci
     CreateRecipientsService,
     UpdateRecipientsService,
     DeleteRecipientsService,
+    FindManyRecipientsService,
   ],
 })
 export class RecipientsModule {}

@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Delete,
+  Get,
   HttpCode,
   HttpStatus,
   Param,
@@ -15,10 +16,12 @@ import { BadRequestSwagger } from '../../../helpers/swagger/errors/bad-request.s
 import { NotFoundSwagger } from '../../../helpers/swagger/errors/not-found.swagger';
 import { CreateTodoSwagger } from '../../../helpers/swagger/interfaces/users/create-todo.swagger';
 import { UpdateTodoSwagger } from '../../../helpers/swagger/interfaces/recipients/update-todo.swagger';
+import { IndexTodoSwagger } from '../../../helpers/swagger/interfaces/recipients/index-todo.swagger';
 
 import { CreateRecipientsService } from '../../../domain/application/recipients/create-recipients.service';
 import { UpdateRecipientsService } from '../../../domain/application/recipients/update-recipients.service';
 import { DeleteRecipientsService } from '../../../domain/application/recipients/delete-recipients.service';
+import { FindManyRecipientsService } from '../../../domain/application/recipients/findmany-recipients.service';
 
 import { CreateRecipientDto } from '../../../helpers/dtos/recipients/create-recipient.dto';
 import { UpdateRecipientDto } from '../../../helpers/dtos/recipients/update-recipient.dto';
@@ -30,7 +33,20 @@ export class RecipientsController {
     private readonly createRecipientsService: CreateRecipientsService,
     private readonly updateRecipientsService: UpdateRecipientsService,
     private readonly deleteRecipientsService: DeleteRecipientsService,
+    private readonly findManyRecipientsService: FindManyRecipientsService,
   ) {}
+
+  @Get()
+  @ApiOperation({ summary: 'List recipients' })
+  @ApiResponse({
+    status: 200,
+    description: 'List of recipients returned successfully',
+    type: IndexTodoSwagger,
+    isArray: true,
+  })
+  async findMany() {
+    return await this.findManyRecipientsService.execute();
+  }
 
   @Post()
   @ApiOperation({ summary: 'Create recipients' })

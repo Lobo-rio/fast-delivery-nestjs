@@ -23,6 +23,14 @@ export class RecipientRepository implements RecipientsInterfaceRepository {
     }
   }
 
+  async findMany(): Promise<Recipient[]> {
+    try {
+      return await this.recipientRepository.find();
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
   async create(data: CreateRecipientDto): Promise<Recipient> {
     try {
       return await this.recipientRepository.save(
