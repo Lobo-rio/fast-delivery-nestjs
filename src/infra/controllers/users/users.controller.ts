@@ -57,7 +57,7 @@ export class UsersController {
   }
 
   @Get(':id')
-  @ApiOperation({ summary: 'List a single users' })
+  @ApiOperation({ summary: 'List a single user' })
   @ApiResponse({
     status: 200,
     description: 'Returned single user successfully',

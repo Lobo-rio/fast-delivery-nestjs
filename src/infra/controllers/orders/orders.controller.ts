@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Delete,
+  Get,
   HttpCode,
   HttpStatus,
   Param,
@@ -14,6 +15,7 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreateOrdersService } from '../../../domain/application/orders/create-orders.service';
 import { UpdateStatusOrdersService } from '../../../domain/application/orders/update-status-orders.service';
 import { DeleteOrdersService } from '../../../domain/application/orders/delete-orders.service';
+import { FindByIdOrdersService } from '../../../domain/application/orders/findbyid-orders.service';
 
 import { BadRequestSwagger } from '../../../helpers/swagger/errors/bad-request.swagger';
 import { NotFoundSwagger } from '../../../helpers/swagger/errors/not-found.swagger';
@@ -22,6 +24,8 @@ import { UpdateTodoSwagger } from '../../../helpers/swagger/interfaces/orders/up
 
 import { CreateOrderDto } from '../../../helpers/dtos/orders/create-order.dto';
 import { UpdateOrderDto } from '../../../helpers/dtos/orders/update-order.dto';
+import { IndexTodoSwagger } from '../../../helpers/swagger/interfaces/orders/index-todo.swagger';
+import { FindManyOrdersService } from 'src/domain/application/orders/findmany-orders.service';
 
 @Controller('app/v1/orders')
 @ApiTags('Orders')
@@ -30,7 +34,43 @@ export class OrdersController {
     private readonly createOrdersService: CreateOrdersService,
     private readonly updateOrdersService: UpdateStatusOrdersService,
     private readonly deleteOrdersService: DeleteOrdersService,
+    private readonly findByIdOrdersService: FindByIdOrdersService,
+    private readonly findManyOrdersService: FindManyOrdersService,
   ) {}
+
+  @Get()
+  @ApiOperation({ summary: 'List orders' })
+  @ApiResponse({
+    status: 200,
+    description: 'List of orders returned successfully',
+    type: IndexTodoSwagger,
+    isArray: true,
+  })
+  async findMany() {
+    return await this.findManyOrdersService.execute();
+  }
+
+  @Get(':id')
+  @ApiOperation({ summary: 'List a single order' })
+  @ApiResponse({
+    status: 200,
+    description: 'Returned single order successfully',
+    type: IndexTodoSwagger,
+    isArray: false,
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Invalid parameters',
+    type: BadRequestSwagger,
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Order not found',
+    type: NotFoundSwagger,
+  })
+  async findById(@Param('id', new ParseUUIDPipe()) id: string) {
+    return await this.findByIdOrdersService.execute(id);
+  }
 
   @Post()
   @ApiOperation({ summary: 'Create order' })

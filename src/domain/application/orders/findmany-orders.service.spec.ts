@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { FindManyOrdersService } from './find-many-orders.service';
+import { FindManyOrdersService } from './findmany-orders.service';
 
 describe('FindManyOrdersService', () => {
   let service: FindManyOrdersService;

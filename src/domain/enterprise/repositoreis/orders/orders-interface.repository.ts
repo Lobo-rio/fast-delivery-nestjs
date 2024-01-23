@@ -5,6 +5,7 @@ import { Order } from '../../../../infra/entities/orders/order.entity';
 export interface OrdersInterfaceRepository {
   findById(id: string): Promise<Order>;
   findByNumberOrder(numberOrder: string): Promise<Order>;
+  findMany(): Promise<Order[]>;
   create(data: CreateOrderDto): Promise<Order>;
   updateStatus(id: string, data: UpdateOrderDto): Promise<Order>;
   softDelete(id: string): Promise<void>;

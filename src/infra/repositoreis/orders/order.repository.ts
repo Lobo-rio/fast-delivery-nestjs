@@ -30,6 +30,14 @@ export class OrderRepository implements OrdersInterfaceRepository {
     }
   }
 
+  async findMany(): Promise<Order[]> {
+    try {
+      return await this.orderRepository.find();
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
   async create(data: CreateOrderDto): Promise<Order> {
     try {
       return await this.orderRepository.save(this.orderRepository.create(data));
