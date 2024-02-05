@@ -6,20 +6,21 @@ import { EnvService } from '../../helpers/env/env.service';
 type SendEmailRequest = {
   name: string;
   email: string;
+  status: string;
 };
 
 @Injectable()
 export class NodeMailerService {
   constructor(private readonly env: EnvService) {}
 
-  async execute({ name, email }: SendEmailRequest): Promise<boolean> {
+  async execute({ name, email, status }: SendEmailRequest): Promise<boolean> {
     try {
       const transporter = this.credentials();
       await transporter.sendMail({
         from: 'contato@textenv.com',
         to: email,
         subject: 'Cadastro de Autor',
-        text: `Sr(a) ${name}, muitissímo obrigado por efetudar o seu cadastro conosco!`,
+        text: `Sr(a) ${name}, muitissímo obrigado por contratar nosso serviço, sua encomenda está com status de ${status}!`,
       });
 
       return true;

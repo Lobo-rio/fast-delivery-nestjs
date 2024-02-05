@@ -8,10 +8,15 @@ import { OrdersModule } from './domain/enterprise/orders/orders.module';
 import { RecipientsModule } from './domain/enterprise/recipients/recipients.module';
 import { MulterUploadModule } from './core/multer/multer-upload.module';
 import { EnvModule } from './helpers/env/env.module';
+import { envSchema } from './helpers/env/env';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
+    ConfigModule.forRoot({
+      validate: (env) => envSchema.parse(env),
+      isGlobal: true,
+    }),
     UsersModule,
     PostgresModule,
     AuthModule,

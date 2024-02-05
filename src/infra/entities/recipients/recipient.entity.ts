@@ -18,6 +18,14 @@ export class Recipient {
   @ApiProperty()
   public name: string;
 
+  @Column({ length: 12 })
+  @ApiProperty()
+  public phone: string;
+
+  @Column({ length: 120 })
+  @ApiProperty()
+  public email: string;
+
   @Column({ length: 120 })
   @ApiProperty()
   public address: string;

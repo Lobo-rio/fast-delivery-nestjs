@@ -11,6 +11,7 @@ import { UsersInterfaceRepository } from '../../../domain/enterprise/repositorei
 
 import { CreateOrderDto } from '../../../helpers/dtos/orders/create-order.dto';
 import { Order } from '../../../infra/entities/orders/order.entity';
+import { NodeMailerService } from '../../../core/nodemailer/nodemailer.service';
 
 @Injectable()
 export class CreateOrdersService {
@@ -21,6 +22,7 @@ export class CreateOrdersService {
     private readonly recipientRepository: RecipientsInterfaceRepository,
     @Inject('UsersInterfaceRepository')
     private readonly userRepository: UsersInterfaceRepository,
+    private readonly sendEmailService: NodeMailerService,
   ) {}
 
   async execute(data: CreateOrderDto): Promise<Order> {
@@ -44,6 +46,12 @@ export class CreateOrdersService {
         'User is not registered as a delivery person!',
       );
     }
+
+    await this.sendEmailService.execute({
+      name: recipientExists.name,
+      email: recipientExists.email,
+      status: data.status,
+    });
 
     return await this.orderRepository.create(data);
   }

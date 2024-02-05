@@ -18,8 +18,15 @@ import { DeleteOrdersService } from '../../../domain/application/orders/delete-o
 import { FindByIdOrdersService } from '../../../domain/application/orders/findbyid-orders.service';
 import { FindManyOrdersService } from '../../../domain/application/orders/findmany-orders.service';
 
+import { NodeMailerModule } from '../../../core/nodemailer/nodemailer.module';
+import { RecipientsModule } from '../recipients/recipients.module';
+
 @Module({
-  imports: [TypeOrmModule.forFeature([Order, Recipient, User])],
+  imports: [
+    TypeOrmModule.forFeature([Order, Recipient, User]),
+    RecipientsModule,
+    NodeMailerModule,
+  ],
   providers: [
     CreateOrdersService,
     UpdateStatusOrdersService,
