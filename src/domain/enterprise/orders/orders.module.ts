@@ -13,6 +13,7 @@ import { OrdersController } from '../../../infra/controllers/orders/orders.contr
 
 import { CreateOrdersService } from '../../../domain/application/orders/create-orders.service';
 import { UpdateStatusOrdersService } from '../../../domain/application/orders/update-status-orders.service';
+import { UpdateDeliveryWithFileOrdersService } from '../../application/orders/update-delivery-with-file-orders.service';
 import { DeleteOrdersService } from '../../../domain/application/orders/delete-orders.service';
 import { FindByIdOrdersService } from '../../../domain/application/orders/findbyid-orders.service';
 import { FindManyOrdersService } from '../../../domain/application/orders/findmany-orders.service';
@@ -22,6 +23,7 @@ import { FindManyOrdersService } from '../../../domain/application/orders/findma
   providers: [
     CreateOrdersService,
     UpdateStatusOrdersService,
+    UpdateDeliveryWithFileOrdersService,
     DeleteOrdersService,
     FindByIdOrdersService,
     FindManyOrdersService,
@@ -42,6 +44,7 @@ import { FindManyOrdersService } from '../../../domain/application/orders/findma
   exports: [
     CreateOrdersService,
     UpdateStatusOrdersService,
+    UpdateDeliveryWithFileOrdersService,
     DeleteOrdersService,
     FindByIdOrdersService,
     FindManyOrdersService,

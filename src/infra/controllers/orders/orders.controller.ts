@@ -2,30 +2,37 @@ import {
   Body,
   Controller,
   Delete,
+  FileTypeValidator,
   Get,
   HttpCode,
   HttpStatus,
+  MaxFileSizeValidator,
   Param,
+  ParseFilePipe,
   ParseUUIDPipe,
   Patch,
   Post,
+  UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 import { CreateOrdersService } from '../../../domain/application/orders/create-orders.service';
 import { UpdateStatusOrdersService } from '../../../domain/application/orders/update-status-orders.service';
+import { UpdateDeliveryWithFileOrdersService } from '../../../domain/application/orders/update-delivery-with-file-orders.service';
 import { DeleteOrdersService } from '../../../domain/application/orders/delete-orders.service';
 import { FindByIdOrdersService } from '../../../domain/application/orders/findbyid-orders.service';
+import { FindManyOrdersService } from '../../../domain/application/orders/findmany-orders.service';
 
 import { BadRequestSwagger } from '../../../helpers/swagger/errors/bad-request.swagger';
 import { NotFoundSwagger } from '../../../helpers/swagger/errors/not-found.swagger';
 import { CreateTodoSwagger } from '../../../helpers/swagger/interfaces/orders/create-todo.swagger';
 import { UpdateTodoSwagger } from '../../../helpers/swagger/interfaces/orders/update-todo.swagger';
+import { IndexTodoSwagger } from '../../../helpers/swagger/interfaces/orders/index-todo.swagger';
 
 import { CreateOrderDto } from '../../../helpers/dtos/orders/create-order.dto';
 import { UpdateOrderDto } from '../../../helpers/dtos/orders/update-order.dto';
-import { IndexTodoSwagger } from '../../../helpers/swagger/interfaces/orders/index-todo.swagger';
-import { FindManyOrdersService } from 'src/domain/application/orders/findmany-orders.service';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('app/v1/orders')
 @ApiTags('Orders')
@@ -33,6 +40,7 @@ export class OrdersController {
   constructor(
     private readonly createOrdersService: CreateOrdersService,
     private readonly updateOrdersService: UpdateStatusOrdersService,
+    private readonly deliveryUploadWithFileOrdersService: UpdateDeliveryWithFileOrdersService,
     private readonly deleteOrdersService: DeleteOrdersService,
     private readonly findByIdOrdersService: FindByIdOrdersService,
     private readonly findManyOrdersService: FindManyOrdersService,
@@ -87,11 +95,44 @@ export class OrdersController {
   })
   @ApiResponse({
     status: 404,
-    description: 'Recipients not found',
+    description: 'Order not found',
     type: NotFoundSwagger,
   })
   async create(@Body() body: CreateOrderDto) {
     return await this.createOrdersService.execute(body);
+  }
+
+  @Post('upload')
+  @UseInterceptors(FileInterceptor('file'))
+  @ApiOperation({ summary: 'Create order delivery with file' })
+  @ApiResponse({
+    status: 200,
+    description: 'Returned single order delivery with file successfully',
+    type: CreateTodoSwagger,
+    isArray: false,
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Invalid parameters',
+    type: BadRequestSwagger,
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Order not found',
+    type: NotFoundSwagger,
+  })
+  async deliveryUploadWithFile(
+    @UploadedFile(
+      new ParseFilePipe({
+        validators: [
+          new MaxFileSizeValidator({ maxSize: 1024 * 1024 * 2 }), //2mb
+          new FileTypeValidator({ fileType: '.(jpeg|png|jpg)' }),
+        ],
+      }),
+    )
+    file: Express.Multer.File,
+  ) {
+    return await this.deliveryUploadWithFileOrdersService.execute(file);
   }
 
   @Patch(':id')
