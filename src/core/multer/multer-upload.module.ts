@@ -5,7 +5,7 @@ import { MulterModule } from '@nestjs/platform-express';
   imports: [
     MulterModule.registerAsync({
       useFactory: () => ({
-        dest: './upload',
+        dest: './uploads',
       }),
     }),
   ],

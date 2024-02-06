@@ -2,10 +2,12 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { OrderRepository } from '../../../infra/repositoreis/orders/order.repository';
+import { DeliveryOrderRepository } from '../../../infra/repositoreis/orders/delivery-order.repository';
 import { RecipientRepository } from '../../../infra/repositoreis/recipients/recipients.repository';
 import { UserRepository } from '../../../infra/repositoreis/users/users.repository';
 
 import { Order } from '../../../infra/entities/orders/order.entity';
+import { DeliveryFile } from '../../../infra/entities/orders/delivery-file.entity';
 import { Recipient } from '../../../infra/entities/recipients/recipient.entity';
 import { User } from '../../../infra/entities/users/user.entity';
 
@@ -23,7 +25,7 @@ import { RecipientsModule } from '../recipients/recipients.module';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Order, Recipient, User]),
+    TypeOrmModule.forFeature([Order, DeliveryFile, Recipient, User]),
     RecipientsModule,
     NodeMailerModule,
   ],
@@ -37,6 +39,10 @@ import { RecipientsModule } from '../recipients/recipients.module';
     {
       provide: 'OrdersInterfaceRepository',
       useClass: OrderRepository,
+    },
+    {
+      provide: 'DeliveryOrdersInterfaceRepository',
+      useClass: DeliveryOrderRepository,
     },
     {
       provide: 'RecipientsInterfaceRepository',

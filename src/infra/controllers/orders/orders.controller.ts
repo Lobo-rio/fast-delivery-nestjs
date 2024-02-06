@@ -12,10 +12,12 @@ import {
   ParseUUIDPipe,
   Patch,
   Post,
+  Req,
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 import { CreateOrdersService } from '../../../domain/application/orders/create-orders.service';
 import { UpdateStatusOrdersService } from '../../../domain/application/orders/update-status-orders.service';
@@ -32,7 +34,8 @@ import { IndexTodoSwagger } from '../../../helpers/swagger/interfaces/orders/ind
 
 import { CreateOrderDto } from '../../../helpers/dtos/orders/create-order.dto';
 import { UpdateOrderDto } from '../../../helpers/dtos/orders/update-order.dto';
-import { FileInterceptor } from '@nestjs/platform-express';
+import { multerConfig } from '../../../core/multer/multer.config';
+import { Request } from 'express';
 
 @Controller('app/v1/orders')
 @ApiTags('Orders')
@@ -103,7 +106,7 @@ export class OrdersController {
   }
 
   @Post('upload/:id')
-  @UseInterceptors(FileInterceptor('file'))
+  @UseInterceptors(FileInterceptor('file', multerConfig))
   @ApiOperation({ summary: 'Create order delivery with file' })
   @ApiResponse({
     status: 200,
@@ -132,8 +135,13 @@ export class OrdersController {
       }),
     )
     file: Express.Multer.File,
+    @Req() req: Request,
   ) {
-    return await this.deliveryUploadWithFileOrdersService.execute(id, file);
+    return await this.deliveryUploadWithFileOrdersService.execute(
+      id,
+      file,
+      req,
+    );
   }
 
   @Patch(':id')

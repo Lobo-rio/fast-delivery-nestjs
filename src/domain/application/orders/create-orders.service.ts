@@ -39,7 +39,7 @@ export class CreateOrdersService {
     if (orderExists) {
       throw new ConflictException('Number order already registered!');
     }
-    
+
     const userExists = await this.userRepository.findById(data.deliveryManId);
     if (userExists === null || userExists.roles === 'admin') {
       throw new NotFoundException(
