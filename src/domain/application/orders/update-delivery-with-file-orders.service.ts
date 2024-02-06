@@ -9,12 +9,14 @@ export class UpdateDeliveryWithFileOrdersService {
   constructor(
     @Inject('OrdersInterfaceRepository')
     private readonly orderRepository: OrdersInterfaceRepository,
+    @Inject('RecipientsInterfaceRepository')
     private readonly recipientRepository: RecipientsInterfaceRepository,
     private readonly sendEmailService: NodeMailerService,
   ) {}
 
-  async execute(file: Express.Multer.File): Promise<boolean> {
-    /*const orderExists = await this.orderRepository.findById(id);
+  async execute(id: string, file: Express.Multer.File): Promise<boolean> {
+    /*const status = 'Entregue';
+    const orderExists = await this.orderRepository.findById(id);
     if (!orderExists) {
       throw new NotFoundException('Order is not registered!');
     }
@@ -26,11 +28,11 @@ export class UpdateDeliveryWithFileOrdersService {
     await this.sendEmailService.execute({
       name: recipientExists.name,
       email: recipientExists.email,
-      status: data.status,
-    });*/
+      status: status,
+    });
 
-    //await this.orderRepository.updateStatus(data.orderId, data);
-    console.log(file);
+    await this.orderRepository.updateStatus(id, { status });*/
+    console.log(id, file);
     return true;
   }
 }

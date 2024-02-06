@@ -6,6 +6,7 @@ import { PostgresModule } from './infra/database/postgres/postgres.module';
 import { AuthModule } from './domain/enterprise/auth/auth.module';
 import { OrdersModule } from './domain/enterprise/orders/orders.module';
 import { RecipientsModule } from './domain/enterprise/recipients/recipients.module';
+import { NodeMailerModule } from './core/nodemailer/nodemailer.module';
 import { MulterUploadModule } from './core/multer/multer-upload.module';
 import { EnvModule } from './helpers/env/env.module';
 import { envSchema } from './helpers/env/env';
@@ -24,6 +25,7 @@ import { envSchema } from './helpers/env/env';
     RecipientsModule,
     MulterUploadModule,
     EnvModule,
+    NodeMailerModule,
   ],
   controllers: [],
   providers: [],

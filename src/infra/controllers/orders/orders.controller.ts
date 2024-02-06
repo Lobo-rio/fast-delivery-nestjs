@@ -102,7 +102,7 @@ export class OrdersController {
     return await this.createOrdersService.execute(body);
   }
 
-  @Post('upload')
+  @Post('upload/:id')
   @UseInterceptors(FileInterceptor('file'))
   @ApiOperation({ summary: 'Create order delivery with file' })
   @ApiResponse({
@@ -122,6 +122,7 @@ export class OrdersController {
     type: NotFoundSwagger,
   })
   async deliveryUploadWithFile(
+    @Param('id', new ParseUUIDPipe()) id: string,
     @UploadedFile(
       new ParseFilePipe({
         validators: [
@@ -132,7 +133,7 @@ export class OrdersController {
     )
     file: Express.Multer.File,
   ) {
-    return await this.deliveryUploadWithFileOrdersService.execute(file);
+    return await this.deliveryUploadWithFileOrdersService.execute(id, file);
   }
 
   @Patch(':id')

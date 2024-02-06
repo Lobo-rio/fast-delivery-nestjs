@@ -19,7 +19,7 @@ export class NodeMailerService {
       await transporter.sendMail({
         from: 'contato@textenv.com',
         to: email,
-        subject: 'Cadastro de Autor',
+        subject: 'Cadastro de Encomenda',
         text: `Sr(a) ${name}, muitissímo obrigado por contratar nosso serviço, sua encomenda está com status de ${status}!`,
       });
 
